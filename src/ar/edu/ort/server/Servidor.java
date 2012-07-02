@@ -123,7 +123,10 @@ public final class Servidor extends JFrame
 			{
 				try
 				{
+					//Leo el objeto recibido
 					Mensaje msg = (Mensaje) in.readObject();
+					System.out.println("Usuario:" + msg.getNick() + " Accion:" + msg.getType());
+					setNick(msg.getNick());
 					setChanged();
 					notifyObservers(msg);
 			    }
@@ -251,7 +254,9 @@ public final class Servidor extends JFrame
 	        {
             case Mensaje.LOGOUT:
                 break;
-            case Mensaje.LOGIN:	                
+            case Mensaje.LOGIN:
+				//Agrego el nick a la lista
+				agregarUsuario(cw.getNick(), cw);
                 break;
             case Mensaje.MESSAGE:
                 break;
@@ -264,7 +269,7 @@ public final class Servidor extends JFrame
 	        listaNicks.put(nick, cw);
 	    }
 
-	    //Verificacion de Nick
+	    //Verificacion de Nick TODO Preguntar donde validar esto
 	    private boolean nickExiste(String nickName)
 	    {
 	        return listaNicks.containsKey(nickName);

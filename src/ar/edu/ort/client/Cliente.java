@@ -45,6 +45,7 @@ public class Cliente extends JFrame
 	{
 		init();
 	}
+	
 	private int dialogoConectado()
 	{
 		Object[] options = {"Si", "No"};
@@ -259,14 +260,17 @@ public class Cliente extends JFrame
 	{
 		JOptionPane.showMessageDialog(this, msg);
 	}
+	
 	private void agregarUsuario(String usr)
 	{
 		connectedUsersModel.addElement(usr);
 	}
+	
 	private void removerUsuario(String usr)
 	{
 		connectedUsersModel.removeElement(usr);
 	}
+	
 	public static void main(String[] args)
 	{
 		Cliente cliente = new Cliente();
@@ -294,6 +298,7 @@ public class Cliente extends JFrame
 						mensaje.setNick(userNick.getText());
 						//Mensaje de LOGIN
 						mensaje.setType(Mensaje.LOGIN);
+						//Envio el objeto con el mensaje de login
 						oos.writeObject(mensaje);
 						try
 						{
