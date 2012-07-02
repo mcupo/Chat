@@ -126,7 +126,10 @@ public final class Servidor extends JFrame
 					//Leo el objeto recibido
 					Mensaje msg = (Mensaje) in.readObject();
 					System.out.println("Usuario:" + msg.getNick() + " Accion:" + msg.getType());
-					setNick(msg.getNick());
+					if(msg.getType()==Mensaje.LOGIN)
+					{
+						setNick(msg.getNick());
+					}
 					setChanged();
 					notifyObservers(msg);
 			    }
@@ -256,7 +259,22 @@ public final class Servidor extends JFrame
                 break;
             case Mensaje.LOGIN:
 				//Agrego el nick a la lista
-				agregarUsuario(cw.getNick(), cw);
+				if(!nickExiste(cw.getNick()))
+				{
+					agregarUsuario(cw.getNick(), cw);
+					Mensaje lista = new Mensaje();
+					lista.setType(Mensaje.LIST);
+					//Envio los usuarios conectados
+					lista.setUsers(getListaConectados());
+					cw.enviarMensaje(lista);
+				}
+				else
+				{
+					Mensaje error = new Mensaje();
+					error.setType(Mensaje.ERROR);
+					error.setText("El nick ya existe");
+					cw.enviarMensaje(error);
+				}
                 break;
             case Mensaje.MESSAGE:
                 break;
@@ -281,13 +299,13 @@ public final class Servidor extends JFrame
 	        listaNicks.remove(nick);
 	    }
 	    
-	    private Vector getListaConectados()
+	    private Vector<String> getListaConectados()
 	    {
-	    	Vector vec = new Vector();
+	    	Vector<String> vec = new Vector<String>();
 	    	Enumeration lista = listaNicks.keys();
 	    	while (lista.hasMoreElements())
 	    	{
-	    		vec.addElement(lista.nextElement());
+	    		vec.addElement((String) lista.nextElement());
 	    	}
 	    	return vec;
 	    }

@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Vector;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -388,7 +391,7 @@ public class Cliente extends JFrame
 					for (int i=0;i<users.length;i++)
 					{
 						if (!users[i].toString().equals(userNick.getText()))
-							msg.getUsers().add(users[i]);						
+							msg.getUsers().add((String) users[i]);						
 					}
 					oos.writeObject(msg);
 				}
@@ -403,15 +406,24 @@ public class Cliente extends JFrame
 		     switch( msg.getType() )
 		     {
 		       case Mensaje.LOGOUT:
-		               break;
+		    	   break;
 		       case Mensaje.LOGIN:
-		               break;
+		    	   break;
 		       case Mensaje.MESSAGE:
-		               break;
+		    	   break;
 		       case Mensaje.LIST:
-		               break;                        
+		    	   btnSend.setEnabled(true);
+		    	   userMessage.setEditable(true);
+		    	   //Agrego los usuarios conectados a la lista del chat
+		    	   Vector<String> vec = new Vector<String>();
+		    	   vec=msg.getUsers();
+		    	   for(int i=0;i<vec.size();i++)
+		    	   {
+		    		   agregarUsuario(vec.get(i));
+		    	   }
+		    	   break;                        
 		       case Mensaje.ERROR:
-		               clientError("El nickname " + msg.getNick() + " ya se encuentra en uso. Ingrese uno nuevo.");
+		               clientError(msg.getText());
 		               clientStop();
 		               break;                                        
 		       default: return;
