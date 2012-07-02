@@ -405,9 +405,12 @@ public class Cliente extends JFrame
 			 System.out.println("Procesando Mensaje");
 		     switch( msg.getType() )
 		     {
+		       //Quita usario de la lista
 		       case Mensaje.LOGOUT:
 		    	   break;
+		       //Agrega usuario a la lista
 		       case Mensaje.LOGIN:
+		    	   agregarUsuario(msg.getNick());
 		    	   break;
 		       case Mensaje.MESSAGE:
 		    	   break;

@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -261,6 +262,8 @@ public final class Servidor extends JFrame
 				//Agrego el nick a la lista
 				if(!nickExiste(cw.getNick()))
 				{
+					//Envio el mensaje a todos los usuarios conectados, avisando que otro se conecto
+					propagarMensaje(msg);
 					agregarUsuario(cw.getNick(), cw);
 					Mensaje lista = new Mensaje();
 					lista.setType(Mensaje.LIST);
@@ -312,6 +315,10 @@ public final class Servidor extends JFrame
 	    
 	    private void propagarMensaje(Mensaje msg)
 	    {
+	    	for(Object value : listaNicks.values())
+	    	{
+	    		((ClientWorker) value).enviarMensaje(msg);
+	    	}
 	    }
 	} //Fin ServerThread
 }
