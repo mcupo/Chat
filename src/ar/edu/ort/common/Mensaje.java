@@ -16,38 +16,50 @@ public class Mensaje implements Serializable
 	private int type;
 	private String nick;
 	private String text;
-	private Vector users;
+	private Vector<String> users;
 	
 	public Mensaje()
 	{
-		users = new Vector();
+		users = new Vector<String>();
 	}
+	
 	public String getNick()
 	{
 		return nick;
 	}
+	
 	public void setNick(String nick)
 	{
 		this.nick = nick;
 	}
+	
 	public String getText()
 	{
 		return text;
 	}
+	
 	public void setText(String text)
 	{
 		this.text = text;
 	}
+	
 	public int getType()
 	{
 		return type;
 	}
+	
 	public void setType(int type)
 	{
 		this.type = type;
 	}
-	public Vector getUsers()
+	
+	public Vector<String> getUsers()
 	{
 		return users;
+	}
+	
+	public void setUsers(Vector<String> users)
+	{
+		this.users=users;
 	}
 }
