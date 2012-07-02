@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,7 +50,7 @@ public class Cliente extends JFrame
 		Object[] options = {"Si", "No"};
 		int n = JOptionPane.showOptionDialog(this,
 		"Desea interrumpir la conexion a " + serverHost.getText() + " y cerrar la aplicación?",
-		"Cliente Chat - a2012c1 Grupo 3",
+		"Cliente Chat - b2012c1 Grupo 3",
 		JOptionPane.YES_NO_OPTION,
 		JOptionPane.WARNING_MESSAGE,
 		null,
@@ -291,9 +290,11 @@ public class Cliente extends JFrame
 					oos = new ObjectOutputStream(skt.getOutputStream());
 					try
 					{
-						//
-						// Enviar LOGIN
-						//
+						Mensaje mensaje = new Mensaje();
+						mensaje.setNick(userNick.getText());
+						//Mensaje de LOGIN
+						mensaje.setType(Mensaje.LOGIN);
+						oos.writeObject(mensaje);
 						try
 						{
 							

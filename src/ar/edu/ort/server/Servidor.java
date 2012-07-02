@@ -36,7 +36,7 @@ public final class Servidor extends JFrame
 	
 	private void init() 
 	{
-		setTitle("Grupo XX - Puerto:" + Consts.DEFAULT_SEVER_PORT);
+		setTitle("Grupo 3 - Puerto:" + Consts.DEFAULT_SEVER_PORT);
 		setBounds(0, 0, 160, 100);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new FlowLayout());
