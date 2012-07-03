@@ -188,6 +188,7 @@ public class Cliente extends JFrame
 		messageHistory.setBackground(Color.WHITE);
 		messageHistory.setEditable(false);
 		pnl.add(messageHistory, BorderLayout.CENTER);
+		messageHistory.append("Bienvenido a la sala de chat!");
 		
 		//
 		// CENTER Panel - Area para escribir mensajes
@@ -309,7 +310,7 @@ public class Cliente extends JFrame
 							
 							
 							
-				            messageHistory.setText( "Iniciando conexión a " + serverHost.getText()+":"+ Integer.parseInt(serverPort.getText()));
+				            messageHistory.append( "\nIniciando conexión a " + serverHost.getText()+":"+ Integer.parseInt(serverPort.getText()));
 							System.out.println(userNick.getText().trim()+":login enviado");
 						} 
 						//catch(IOException e)
@@ -319,6 +320,7 @@ public class Cliente extends JFrame
 						}
 						ObjectInputStream ois = new ObjectInputStream(skt.getInputStream());						
 						// Quedarse en loop hasta que se corte
+						messageHistory.append("\n" + "Has ingresado al chat.");
 						while (skt.isConnected())
 						{
 							try
@@ -362,6 +364,7 @@ public class Cliente extends JFrame
 				clientError("Error al conectarse a " + serverHost.getText()+":"+serverPort.getText());
 				clientStop();
 			}
+			messageHistory.append("\n" + "Has salido del chat.");
 		}
 		
 		public void terminate()
@@ -416,6 +419,7 @@ public class Cliente extends JFrame
 		    	   break;
 		       //Agrega usuario a la lista
 		       case Mensaje.LOGIN:
+		    	   messageHistory.append("\n" + msg.getNick() + " ha ingresado al chat.");
 		    	   agregarUsuario(msg.getNick());
 		    	   break;
 		       case Mensaje.MESSAGE:
