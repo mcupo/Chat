@@ -216,6 +216,7 @@ public class Cliente extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				clientSend();
+				userMessage.setText("");
 			}
 		});
 	}
@@ -383,9 +384,13 @@ public class Cliente extends JFrame
 			{
 				try
 				{
+					//Agrego el mensaje que manda el usuario a la misma ventana de chat, no hace falta hacerlo en el servidor
+					messageHistory.append("\n" + userNick.getText() + " dice:" + userMessage.getText());
+					
 					Mensaje msg = new Mensaje();
 					msg.setType(Mensaje.MESSAGE);
-
+					msg.setText(userNick.getText() + " dice:" + userMessage.getText());
+					msg.setNick(userNick.getText());
 					//agregar lista de usuarios seleccionados como destinatarios
 					Object[] users=connectedUsers.getSelectedValues();
 					for (int i=0;i<users.length;i++)
@@ -414,6 +419,8 @@ public class Cliente extends JFrame
 		    	   agregarUsuario(msg.getNick());
 		    	   break;
 		       case Mensaje.MESSAGE:
+		    	   //Escribo en el chat el mensaje recibido
+		    	   messageHistory.append("\n" + msg.getText());
 		    	   break;
 		       case Mensaje.LIST:
 		    	   btnSend.setEnabled(true);
