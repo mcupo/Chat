@@ -10,7 +10,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -171,10 +170,20 @@ public final class Servidor extends JFrame
 		{
 			try
 			{
+				if (isLoggedIn())
+				{
+					Mensaje mensaje = new Mensaje();
+					mensaje.setNick(nick);
+					//Mensaje de LOGOUT
+					mensaje.setType(Mensaje.LOGOUT);
+					//Envio el objeto con el mensaje de login
+					//oos.writeObject(mensaje);
+					setChanged();
+					notifyObservers(mensaje);
+				}
 				in.close();
 				out.close();
 				cliente.close();
-				if (isLoggedIn()){}
 			}
 			catch(IOException e)
 			{
@@ -197,13 +206,13 @@ public final class Servidor extends JFrame
 	class ServerThread extends Thread implements Observer
 	{
 		private ServerSocket ss;
-		private Hashtable listaNicks;
+		private Hashtable<String, ClientWorker> listaNicks;
 		
 		public ServerThread()
 		{
 			// La hashtable guarda como Key el nick del usuario
 			// y como Element el ObjectOutputStream.
-			listaNicks = new Hashtable();
+			listaNicks = new Hashtable<String, ClientWorker>();
 		}
 		
 		public void run()
@@ -237,7 +246,7 @@ public final class Servidor extends JFrame
 			{
 				try
 				{
-					Enumeration lista = listaNicks.keys();
+					Enumeration<String> lista = listaNicks.keys();
 			    	while (lista.hasMoreElements()){
 			    		ClientWorker cw = (ClientWorker) listaNicks.get(lista.nextElement());
 			    		cw.setNick("");
@@ -257,6 +266,8 @@ public final class Servidor extends JFrame
 	        switch (msg.getType())
 	        {
             case Mensaje.LOGOUT:
+            	//Saco de la lista de conectados al usuario que se desconecto
+            	quitarUsuario(msg.getNick());
             	//Envio el mensaje a todos los usuarios conectados, avisando que otro se desconecto
             	propagarMensaje(msg);
                 break;
@@ -292,7 +303,7 @@ public final class Servidor extends JFrame
 	        listaNicks.put(nick, cw);
 	    }
 
-	    //Verificacion de Nick TODO Preguntar donde validar esto
+	    //Verificacion de Nick
 	    private boolean nickExiste(String nickName)
 	    {
 	        return listaNicks.containsKey(nickName);
@@ -307,7 +318,7 @@ public final class Servidor extends JFrame
 	    private Vector<String> getListaConectados()
 	    {
 	    	Vector<String> vec = new Vector<String>();
-	    	Enumeration lista = listaNicks.keys();
+	    	Enumeration<String> lista = listaNicks.keys();
 	    	while (lista.hasMoreElements())
 	    	{
 	    		vec.addElement((String) lista.nextElement());
