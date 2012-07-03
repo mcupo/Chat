@@ -257,6 +257,8 @@ public final class Servidor extends JFrame
 	        switch (msg.getType())
 	        {
             case Mensaje.LOGOUT:
+            	//Envio el mensaje a todos los usuarios conectados, avisando que otro se desconecto
+            	propagarMensaje(msg);
                 break;
             case Mensaje.LOGIN:
 				//Agrego el nick a la lista
