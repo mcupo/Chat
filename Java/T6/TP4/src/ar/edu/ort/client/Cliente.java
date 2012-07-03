@@ -412,6 +412,7 @@ public class Cliente extends JFrame
 		     {
 		       //Quita usario de la lista
 		       case Mensaje.LOGOUT:
+		    	   messageHistory.append("\n" + msg.getNick() + " se ha desconectado.");
 		    	   removerUsuario(msg.getNick());
 		    	   break;
 		       //Agrega usuario a la lista
