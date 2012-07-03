@@ -386,10 +386,7 @@ public class Cliente extends JFrame
 			if (skt != null)
 			{
 				try
-				{
-					//Agrego el mensaje que manda el usuario a la misma ventana de chat, no hace falta hacerlo en el servidor
-					//messageHistory.append("\n" + userNick.getText() + " dice:" + userMessage.getText());
-					
+				{				
 					Mensaje msg = new Mensaje();
 					msg.setType(Mensaje.MESSAGE);
 					msg.setText(userNick.getText() + " dice:" + userMessage.getText());
