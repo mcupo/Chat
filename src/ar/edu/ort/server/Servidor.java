@@ -293,12 +293,20 @@ public final class Servidor extends JFrame
 				}
                 break;
             case Mensaje.MESSAGE:
-            	//Mensaje mensaje = new Mensaje();
-            	//mensaje.setType(Mensaje.MESSAGE);
-            	for ( String dest : msg.getUsers() ){
-            		this.listaNicks.get(dest).enviarMensaje(msg);
+            	//Si el usuario especifico los destinatarios, les envio el mensaje, sino lo envio a todos los usuarios conectados
+            	if(!msg.getUsers().isEmpty())
+            	{
+	            	for(String dest : msg.getUsers())
+	            	{
+	            		this.listaNicks.get(dest).enviarMensaje(msg);
+	            	}
+	            	//Y le mando al usuario el mensaje que escribio
+	            	cw.enviarMensaje(msg);
             	}
-            	//cw.enviarMensaje(msg);
+            	else
+            	{           		
+            		propagarMensaje(msg);
+            	}
                 break;
 	        }
 		}
