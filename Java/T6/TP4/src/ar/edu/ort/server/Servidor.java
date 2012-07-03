@@ -293,6 +293,12 @@ public final class Servidor extends JFrame
 				}
                 break;
             case Mensaje.MESSAGE:
+            	//Mensaje mensaje = new Mensaje();
+            	//mensaje.setType(Mensaje.MESSAGE);
+            	for ( String dest : msg.getUsers() ){
+            		this.listaNicks.get(dest).enviarMensaje(msg);
+            	}
+            	//cw.enviarMensaje(msg);
                 break;
 	        }
 		}
