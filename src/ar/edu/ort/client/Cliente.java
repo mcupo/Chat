@@ -364,6 +364,11 @@ public class Cliente extends JFrame
 				clientError("Error al conectarse a " + serverHost.getText()+":"+serverPort.getText());
 				clientStop();
 			}
+			catch(Exception e)
+			{
+				clientError(e.getMessage());
+				clientStop();
+			}
 			messageHistory.append("\n" + "Has salido del chat.");
 		}
 		
