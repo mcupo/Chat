@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -68,7 +67,7 @@ public class Cliente extends JFrame
 		setTitle("Grupo 3 - 3°2° B - Chat");
 		setBounds(0, 0, 720, 400);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    //configurar acciones de la "x"
+	    //Manejo la accion de cierre de la ventana
 		addWindowListener(new WindowAdapter()
 		{
 	        public void windowClosing(WindowEvent e)
@@ -104,9 +103,7 @@ public class Cliente extends JFrame
 		JPanel pnl, pnlAux;
 		JLabel lbl;
 		
-		//
 		// TOP Panel - Datos del Servidor
-		//
 		pnl = new JPanel();
 		pnl.setLayout(null);
 		pnl.setBackground(Color.LIGHT_GRAY);
@@ -144,6 +141,7 @@ public class Cliente extends JFrame
 				clientStart();
 			}
 		});
+		
 		btnDisconnect = new JButton("Desconectar");
 		btnDisconnect.setEnabled(false);
 		pnl.add(btnDisconnect);
@@ -156,9 +154,7 @@ public class Cliente extends JFrame
 			}
 		});
 		
-		//
 		// JList - Nicks de los usuarios logueados
-		//
 		pnlAux = new JPanel();
 		pnlAux.setLayout(new BorderLayout());
 		pnlAux.setBackground(Color.RED);
@@ -173,9 +169,7 @@ public class Cliente extends JFrame
 		connectedUsers.setBackground(Color.ORANGE);
 		pnlAux.add(connectedUsers, BorderLayout.CENTER);
 
-		//
 		// CENTER Panel - Panel con datos de mensajes
-		//
 		pnl = new JPanel();
 		pnl.setLayout(new BorderLayout());
 		pnl.setBackground(Color.GRAY);
@@ -190,10 +184,7 @@ public class Cliente extends JFrame
 		pnl.add(messageHistory, BorderLayout.CENTER);
 		messageHistory.append("Bienvenido a la sala de chat!");
 		
-		//
-		// CENTER Panel - Area para escribir mensajes
-		// está localizado al SOUTH del CENTER Panel.
-		//
+		// CENTER Panel - Area para escribir mensajes localizada al SOUTH del CENTER Panel.
 		pnlAux = new JPanel();
 		pnlAux.setLayout(null);
 		pnlAux.setBackground(Color.GRAY);
@@ -303,29 +294,26 @@ public class Cliente extends JFrame
 						mensaje.setNick(userNick.getText());
 						//Mensaje de LOGIN
 						mensaje.setType(Mensaje.LOGIN);
-						//Envio el objeto con el mensaje de login
+						//Envio el objeto con el mensaje de login al servidor
 						oos.writeObject(mensaje);
 						try
 						{
-							
-							
-							
 				            messageHistory.append( "\nIniciando conexión a " + serverHost.getText()+":"+ Integer.parseInt(serverPort.getText()));
 							System.out.println(userNick.getText().trim()+":login enviado");
 						} 
-						//catch(IOException e)
 						catch(Exception e)
 						{
 							clientError("Error en la conexión.");
 						}
 						ObjectInputStream ois = new ObjectInputStream(skt.getInputStream());						
-						// Quedarse en loop hasta que se corte
 						messageHistory.append("\n" + "Has ingresado al chat.");
+						//Se queda ciclando hasta que se corte la conexión
 						while (skt.isConnected())
 						{
 							connected=true;
 							try
 							{
+								//Leo el objeto enviado desde el servidor
 								Mensaje msg = (Mensaje) ois.readObject();
 								System.out.println(userNick.getText().trim()+":mensaje recibido, tipo:" + String.valueOf(msg.getType()));
 								procesarMensaje(msg);
@@ -380,7 +368,7 @@ public class Cliente extends JFrame
 				connected=false;
 				try
 				{
-					//El logout lo realiza el server automaticamente ante el cierre del socket
+					//Cuando se cierra el socket, el servidor se encarga de propagar el logout
 					skt.close();
 				}
 				catch(IOException e){}
@@ -412,7 +400,6 @@ public class Cliente extends JFrame
 		
 		public void procesarMensaje(Mensaje msg)
 		{
-			 String mostrar = null;
 			 System.out.println("Procesando Mensaje");
 		     switch( msg.getType() )
 		     {

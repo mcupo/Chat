@@ -52,6 +52,7 @@ public final class Servidor extends JFrame
 				btnDetener.setEnabled(true);
 				
 			}});
+		
 		btnDetener = new JButton("Detener servidor");
 		btnDetener.setEnabled(false);
 		getContentPane().add(btnDetener);
@@ -123,7 +124,7 @@ public final class Servidor extends JFrame
 			{
 				try
 				{
-					//Leo el objeto recibido
+					//Leo el objeto recibido del cliente
 					Mensaje msg = (Mensaje) in.readObject();
 					System.out.println("Usuario:" + msg.getNick() + " Accion:" + msg.getType());
 					if(msg.getType()==Mensaje.LOGIN)
@@ -135,7 +136,7 @@ public final class Servidor extends JFrame
 			    }
 				catch(IOException e)
 				{
-					//serverError(e.getMessage());
+					serverError(e.getMessage());
 					break;
 			    }
 				catch(ClassNotFoundException e)
@@ -151,14 +152,13 @@ public final class Servidor extends JFrame
 		{
 			return (!nick.equals(""));
 		}
-
-	
-		//Enviar Mensaje 		
+		
 		public void enviarMensaje(Mensaje msg)
 		{
 	        try
 	        {
-	            this.out.writeObject(msg);
+	            //Envio el objeto al cliente
+	        	this.out.writeObject(msg);
 	        }
 	        catch(IOException io)
 	        {
@@ -176,8 +176,6 @@ public final class Servidor extends JFrame
 					mensaje.setNick(nick);
 					//Mensaje de LOGOUT
 					mensaje.setType(Mensaje.LOGOUT);
-					//Envio el objeto con el mensaje de login
-					//oos.writeObject(mensaje);
 					setChanged();
 					notifyObservers(mensaje);
 				}
@@ -210,8 +208,7 @@ public final class Servidor extends JFrame
 		
 		public ServerThread()
 		{
-			// La hashtable guarda como Key el nick del usuario
-			// y como Element el ObjectOutputStream.
+			// La hashtable guarda como Key el nick del usuario y como Value el ObjectOutputStream.
 			listaNicks = new Hashtable<String, ClientWorker>();
 		}
 		
@@ -229,7 +226,6 @@ public final class Servidor extends JFrame
 			        Thread t = new Thread(cw);
 			        t.start();
 				}
-				
 			}
 			catch (IOException e)
 			{
@@ -240,6 +236,7 @@ public final class Servidor extends JFrame
 				ss = null;
 			}
 		}
+		
 		public void terminate()
 		{
 			if (ss != null)
@@ -257,6 +254,7 @@ public final class Servidor extends JFrame
 				catch(IOException e){}
 			}
 		}
+
 		public void update(Observable who, Object what)
 		{
 			Mensaje msg = (Mensaje) what;
