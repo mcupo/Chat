@@ -323,6 +323,7 @@ public class Cliente extends JFrame
 						messageHistory.append("\n" + "Has ingresado al chat.");
 						while (skt.isConnected())
 						{
+							connected=true;
 							try
 							{
 								Mensaje msg = (Mensaje) ois.readObject();
