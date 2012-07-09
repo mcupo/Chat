@@ -136,7 +136,8 @@ public final class Servidor extends JFrame
 			    }
 				catch(IOException e)
 				{
-					serverError(e.getMessage());
+					//Cuando un usuario se desconecta entra por aca, atajo la excepcion pero no hago nada
+					//serverError(e.getMessage());
 					break;
 			    }
 				catch(ClassNotFoundException e)
@@ -287,6 +288,8 @@ public final class Servidor extends JFrame
 					Mensaje error = new Mensaje();
 					error.setType(Mensaje.ERROR);
 					error.setText("El nick ya existe");
+					//Seteo el nick en vacio porque sino saca de la lista al usuario que ya esta conectado con ese nombre
+					cw.setNick("");
 					cw.enviarMensaje(error);
 				}
                 break;

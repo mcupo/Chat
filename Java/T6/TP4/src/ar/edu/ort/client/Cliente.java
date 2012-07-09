@@ -296,15 +296,10 @@ public class Cliente extends JFrame
 						mensaje.setType(Mensaje.LOGIN);
 						//Envio el objeto con el mensaje de login al servidor
 						oos.writeObject(mensaje);
-						try
-						{
-				            messageHistory.append( "\nIniciando conexión a " + serverHost.getText()+":"+ Integer.parseInt(serverPort.getText()));
-							System.out.println(userNick.getText().trim()+":login enviado");
-						} 
-						catch(Exception e)
-						{
-							clientError("Error en la conexión.");
-						}
+						
+				        messageHistory.append( "\nIniciando conexión a " + serverHost.getText()+":"+ Integer.parseInt(serverPort.getText()));
+						System.out.println(userNick.getText().trim()+":login enviado");
+						
 						ObjectInputStream ois = new ObjectInputStream(skt.getInputStream());						
 						messageHistory.append("\n" + "Has ingresado al chat.");
 						//Se queda ciclando hasta que se corte la conexión
@@ -326,17 +321,16 @@ public class Cliente extends JFrame
 							}
 							catch (IOException e)
 							{
-								if (isConnected())
+								/*if (isConnected())
 								{
 									clientError("Error en la conexión.");
-								}
+								}*/
 								clientStop();
 								break;								
 							}
 						}
 					}
-					catch
-					(IOException e)
+					catch(IOException e)
 					{
 						clientError("Error en la conexión.");
 						clientStop();
